@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Τα φθινοπωρινά μας παιχνίδια</title>
+<style>
+  :root { --leaf:#b45309; --pale:#fff7ed; --green:#166534; --line:#fed7aa; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:18px; background:#fffaf3; color:#3b2f25; font-family:Arial, sans-serif; }
+  .game { max-width:760px; margin:0 auto; background:white; border:2px solid var(--line); border-radius:22px; padding:clamp(16px,4vw,30px); box-shadow:0 6px 22px #7c2d1212; }
+  h1 { text-align:center; color:var(--leaf); font-size:clamp(1.6rem,4vw,2.3rem); margin:0 0 8px; }
+  .intro { text-align:center; margin:0 0 20px; }
+  .progress { text-align:center; font-weight:bold; color:#6b5b4e; margin-bottom:12px; }
+  .picture { background:var(--pale); border-radius:18px; padding:22px 12px; text-align:center; border:1px solid var(--line); }
+  .emoji { font-size:clamp(4rem,14vw,7rem); line-height:1.2; }
+  h2 { font-size:clamp(1.2rem,3.8vw,1.65rem); margin:12px 0 0; }
+  .answers { display:grid; gap:10px; margin:18px 0; }
+  button { font:inherit; cursor:pointer; border-radius:13px; padding:14px 16px; border:2px solid #e7d5c4; background:white; color:#3b2f25; text-align:left; font-size:1.08rem; }
+  button:focus-visible { outline:3px solid #2563eb; outline-offset:2px; }
+  button.answer:hover { background:#fff7ed; border-color:#d97706; }
+  button.correct { background:#dcfce7; border-color:#16a34a; }
+  button.wrong { background:#fee2e2; border-color:#dc2626; }
+  .feedback { min-height:30px; font-weight:bold; text-align:center; font-size:1.1rem; }
+  .controls { display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; margin-top:10px; }
+  .controls button { text-align:center; background:#9a3412; color:white; border-color:#9a3412; }
+  .controls button:disabled { opacity:.4; cursor:not-allowed; }
+  .result { text-align:center; background:#f0fdf4; padding:18px; border-radius:16px; }
+  .small { font-size:.9rem; text-align:center; color:#6b5b4e; margin-top:20px; }
+</style>
+</head>
+<body>
+<main class="game">
+  <h1>🍁 Τα φθινοπωρινά μας παιχνίδια 🍂</h1>
+  <p class="intro">Διάλεξε τη σωστή απάντηση και ανακάλυψε τα μυστικά του φθινοπώρου!</p>
+  <div id="play">
+    <div class="progress" id="progress"></div>
+    <section class="picture" aria-live="polite">
+      <div class="emoji" id="emoji"></div>
+      <h2 id="question"></h2>
+    </section>
+    <div class="answers" id="answers"></div>
+    <div class="feedback" id="feedback" aria-live="polite"></div>
+    <div class="controls">
+      <button id="prev" type="button">← Προηγούμενο</button>
+      <button id="next" type="button">Επόμενο →</button>
+    </div>
+  </div>
+  <section id="result" class="result" hidden>
+    <h2>🎉 Μπράβο, παιδιά!</h2>
+    <p id="score"></p>
+    <p>Μάθαμε πολλά για το φθινόπωρο!</p>
+    <button id="restart" type="button" style="background:#166534;color:white;text-align:center">Παίξτε ξανά</button>
+  </section>
+  <p class="small">Εκπαιδευτικό παιχνίδι για το νηπιαγωγείο</p>
+</main>
+<script>
+const qs = [
+ {e:"🍂",q:"Τι πέφτει από τα δέντρα το φθινόπωρο;",a:["Χιόνια","Φύλλα","Κεράσια"],c:1},
+ {e:"🌰",q:"Ποιον καρπό μαζεύουμε το φθινόπωρο;",a:["Κάστανα","Καρπούζια","Κεράσια"],c:0},
+ {e:"☔",q:"Τι χρησιμοποιούμε όταν βρέχει;",a:["Γυαλιά ηλίου","Βεντάλια","Ομπρέλα"],c:2},
+ {e:"🍎",q:"Ποιο είναι φθινοπωρινό φρούτο;",a:["Μήλο","Καρπούζι","Φράουλα"],c:0},
+ {e:"🥾",q:"Τι φοράμε στις λασπωμένες βόλτες;",a:["Σανδάλια","Γαλότσες","Παντόφλες"],c:1},
+ {e:"🐿️",q:"Τι μαζεύει ο σκίουρος;",a:["Κοχύλια","Χιονονιφάδες","Καρπούς"],c:2},
+ {e:"🍄",q:"Πού μπορεί να φυτρώνουν μανιτάρια;",a:["Στο δάσος","Στον ουρανό","Στη θάλασσα"],c:0},
+ {e:"🌧️",q:"Τι βλέπουμε συχνά στον φθινοπωρινό ουρανό;",a:["Πυροτεχνήματα","Σύννεφα και βροχή","Χριστουγεννιάτικα αστέρια"],c:1}
+];
+let i=0, chosen={};
+const $=id=>document.getElementById(id);
+function render(){
+ const q=qs[i]; $("progress").textContent=`Ερώτηση ${i+1} από ${qs.length}`;
+ $("emoji").textContent=q.e; $("question").textContent=q.q; $("feedback").textContent="";
+ $("answers").innerHTML="";
+ q.a.forEach((v,j)=>{
+   const b=document.createElement("button"); b.type="button"; b.className="answer"; b.textContent=v;
+   if(chosen[i]===j){b.classList.add(j===q.c?"correct":"wrong");}
+   b.addEventListener("click",()=>{chosen[i]=j;render();});
+   $("answers").appendChild(b);
+ });
+ if(chosen[i]!==undefined) $("feedback").textContent=chosen[i]===q.c?"Μπράβο! 🎉 Βρήκες τη σωστή απάντηση!":"Προσπάθησε ξανά! 🌻";
+ $("prev").disabled=i===0;
+ $("next").textContent=i===qs.length-1?"Τέλος παιχνιδιού!":"Επόμενο →";
+}
+$("prev").addEventListener("click",()=>{if(i>0){i--;render();}});
+$("next").addEventListener("click",()=>{
+ if(i<qs.length-1){i++;render();}
+ else {$("play").hidden=true;$("result").hidden=false;$("score").textContent=`Σκορ: ${qs.filter((q,k)=>chosen[k]===q.c).length} / ${qs.length}`;}
+});
+$("restart").addEventListener("click",()=>{i=0;chosen={};$("play").hidden=false;$("result").hidden=true;render();});
+render();
+</script>
+</body>
+</html>
