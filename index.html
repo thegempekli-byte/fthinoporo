@@ -1,93 +1,20 @@
-<!DOCTYPE html>
-<html lang="el">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Τα φθινοπωρινά μας παιχνίδια</title>
+<!doctype html><html lang="el"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ντύσε το παιδάκι για το φθινόπωρο</title>
 <style>
-  :root { --leaf:#b45309; --pale:#fff7ed; --green:#166534; --line:#fed7aa; }
-  * { box-sizing: border-box; }
-  body { margin:0; padding:18px; background:#fffaf3; color:#3b2f25; font-family:Arial, sans-serif; }
-  .game { max-width:760px; margin:0 auto; background:white; border:2px solid var(--line); border-radius:22px; padding:clamp(16px,4vw,30px); box-shadow:0 6px 22px #7c2d1212; }
-  h1 { text-align:center; color:var(--leaf); font-size:clamp(1.6rem,4vw,2.3rem); margin:0 0 8px; }
-  .intro { text-align:center; margin:0 0 20px; }
-  .progress { text-align:center; font-weight:bold; color:#6b5b4e; margin-bottom:12px; }
-  .picture { background:var(--pale); border-radius:18px; padding:22px 12px; text-align:center; border:1px solid var(--line); }
-  .emoji { font-size:clamp(4rem,14vw,7rem); line-height:1.2; }
-  h2 { font-size:clamp(1.2rem,3.8vw,1.65rem); margin:12px 0 0; }
-  .answers { display:grid; gap:10px; margin:18px 0; }
-  button { font:inherit; cursor:pointer; border-radius:13px; padding:14px 16px; border:2px solid #e7d5c4; background:white; color:#3b2f25; text-align:left; font-size:1.08rem; }
-  button:focus-visible { outline:3px solid #2563eb; outline-offset:2px; }
-  button.answer:hover { background:#fff7ed; border-color:#d97706; }
-  button.correct { background:#dcfce7; border-color:#16a34a; }
-  button.wrong { background:#fee2e2; border-color:#dc2626; }
-  .feedback { min-height:30px; font-weight:bold; text-align:center; font-size:1.1rem; }
-  .controls { display:flex; flex-wrap:wrap; gap:10px; justify-content:space-between; margin-top:10px; }
-  .controls button { text-align:center; background:#9a3412; color:white; border-color:#9a3412; }
-  .controls button:disabled { opacity:.4; cursor:not-allowed; }
-  .result { text-align:center; background:#f0fdf4; padding:18px; border-radius:16px; }
-  .small { font-size:.9rem; text-align:center; color:#6b5b4e; margin-top:20px; }
-</style>
-</head>
-<body>
-<main class="game">
-  <h1>🍁 Τα φθινοπωρινά μας παιχνίδια 🍂</h1>
-  <p class="intro">Διάλεξε τη σωστή απάντηση και ανακάλυψε τα μυστικά του φθινοπώρου!</p>
-  <div id="play">
-    <div class="progress" id="progress"></div>
-    <section class="picture" aria-live="polite">
-      <div class="emoji" id="emoji"></div>
-      <h2 id="question"></h2>
-    </section>
-    <div class="answers" id="answers"></div>
-    <div class="feedback" id="feedback" aria-live="polite"></div>
-    <div class="controls">
-      <button id="prev" type="button">← Προηγούμενο</button>
-      <button id="next" type="button">Επόμενο →</button>
-    </div>
-  </div>
-  <section id="result" class="result" hidden>
-    <h2>🎉 Μπράβο, παιδιά!</h2>
-    <p id="score"></p>
-    <p>Μάθαμε πολλά για το φθινόπωρο!</p>
-    <button id="restart" type="button" style="background:#166534;color:white;text-align:center">Παίξτε ξανά</button>
-  </section>
-  <p class="small">Εκπαιδευτικό παιχνίδι για το νηπιαγωγείο</p>
-</main>
+*{box-sizing:border-box}body{margin:0;background:#fbf5e9;color:#44372b;font-family:Arial,sans-serif}main{max-width:1000px;margin:auto;padding:16px}h1{text-align:center;color:#795331;font-size:clamp(1.5rem,4vw,2.3rem)}p{text-align:center}.layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{background:#fffdf8;border:2px solid #ead8bc;border-radius:18px;padding:14px}.tabs,.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:10px 0}.tabs button,.choice,.actions button{font:inherit;border:2px solid #e3d1b6;background:white;color:#44372b;border-radius:12px;padding:9px;cursor:pointer}.tabs .active{background:#f9e2e8;border-color:#d97c91}.choices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.choice{display:flex;flex-direction:column;align-items:center;gap:4px;min-height:78px}.choice .pic{font-size:1.8rem}.choice small{font-size:.8rem;text-align:center}.choice.selected{background:#fff0d7;border-color:#c76b35}.scene{height:360px;position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;border-radius:14px;background:linear-gradient(#e9f5f6 0 60%,#f0dcae 60%)}.leaf{position:absolute;font-size:1.5rem}.l1{top:10px;left:15px}.l2{top:30px;right:20px}.l3{bottom:15px;left:25px}.doll{position:relative;width:190px;height:320px;margin-top:15px}.head{position:absolute;top:15px;left:56px;width:78px;height:82px;border-radius:48%;background:#f2c39a;border:2px solid #7b513b;z-index:5}.hair{position:absolute;top:5px;left:51px;width:88px;height:45px;border-radius:50% 50% 25% 25%;background:#815334;border:2px solid #68452f;z-index:6}.pigtail{position:absolute;top:32px;left:38px;width:25px;height:45px;border-radius:50%;background:#815334;border:2px solid #68452f;z-index:3}.eye{position:absolute;top:39px;width:7px;height:9px;background:#3b2d26;border-radius:50%;z-index:7}.eye.e1{left:19px}.eye.e2{right:19px}.smile{position:absolute;top:57px;left:29px;width:20px;height:9px;border-bottom:3px solid #9d4e4a;border-radius:50%;z-index:7}.neck{position:absolute;top:91px;left:81px;width:25px;height:21px;background:#f2c39a;border:2px solid #7b513b}.body{position:absolute;top:104px;left:41px;width:108px;height:98px;background:#fffdf8;border:2px solid #7b513b;border-radius:25px 25px 12px 12px;z-index:4}.arm{position:absolute;top:115px;width:24px;height:94px;background:#f2c39a;border:2px solid #7b513b;border-radius:18px;z-index:2}.a1{left:24px;transform:rotate(12deg)}.a2{right:24px;transform:rotate(-12deg)}.leg{position:absolute;top:198px;width:34px;height:95px;background:#f2c39a;border:2px solid #7b513b;border-radius:12px 12px 15px 15px}.g1{left:58px}.g2{right:58px}.bottom{position:absolute;top:190px;left:43px;width:105px;height:45px;background:#6b9fc3;border:2px solid #7b513b;border-radius:5px 5px 12px 12px;z-index:5}.outer{position:absolute;top:105px;left:41px;width:108px;height:98px;border:2px solid #7b513b;border-radius:25px 25px 12px 12px;z-index:8;display:none}.hat{position:absolute;top:0;left:56px;width:78px;height:28px;border-radius:35px 35px 6px 6px;background:#c94b3b;border:2px solid #7b513b;z-index:9;display:none}.scarf{position:absolute;top:104px;left:70px;width:50px;height:17px;border:2px solid #7b513b;border-radius:7px;background:#d99b32;z-index:9;display:none}.shoes{position:absolute;top:286px;left:48px;width:44px;height:22px;background:#47794c;border:2px solid #7b513b;border-radius:12px 5px 5px 5px;z-index:6}.shoes:after{content:"";position:absolute;left:49px;top:-2px;width:44px;height:22px;background:inherit;border:2px solid #7b513b;border-radius:12px 5px 5px 5px}.status{text-align:center;min-height:24px;font-weight:bold;margin-top:10px}.actions button.primary{background:#47794c;color:white;border-color:#47794c}.actions button.reset{background:#fff0e7;border-color:#e9b99c}.note{font-size:.85rem;color:#746457}@media(max-width:700px){.layout{grid-template-columns:1fr}.choices{grid-template-columns:repeat(3,1fr)}}
+</style></head><body><main><h1>🍂 Ντύσε το παιδάκι για το φθινόπωρο!</h1><p>Διάλεξε ρούχα για μια φθινοπωρινή βόλτα.</p><div class="layout"><section class="panel"><h2>Ποιο παιδάκι θα ντύσουμε;</h2><div class="tabs"><button class="active" data-kind="girl">👧 Κορίτσι</button><button data-kind="boy">👦 Αγόρι</button></div><h3>👕 Μπλούζες και πανωφόρια</h3><div class="choices" id="tops"></div><h3>👖 Παντελόνια και φούστες</h3><div class="choices" id="bottoms"></div><h3>🧣 Αξεσουάρ</h3><div class="choices" id="extras"></div></section><section class="panel"><h2>Η φθινοπωρινή μας εμφάνιση</h2><div class="scene"><span class="leaf l1">🍁</span><span class="leaf l2">🍂</span><span class="leaf l3">🍃</span><div class="doll"><div class="pigtail" id="pigtail"></div><div class="neck"></div><div class="leg g1"></div><div class="leg g2"></div><div class="shoes" id="shoes"></div><div class="bottom" id="bottom"></div><div class="arm a1"></div><div class="arm a2"></div><div class="body" id="shirt"></div><div class="outer" id="outer"></div><div class="scarf" id="scarf"></div><div class="head"><span class="eye e1"></span><span class="eye e2"></span><span class="smile"></span></div><div class="hair" id="hair"></div><div class="hat" id="hat"></div></div></div><div class="status" id="status">Διάλεξε ένα ρούχο από τις επιλογές!</div><div class="actions"><button class="reset" id="reset">↻ Καθαρισμός</button><button class="primary" id="random">✨ Τυχαίο ντύσιμο</button><button class="primary" id="done">✓ Έτοιμο!</button></div><p class="note">Άλλαξε τα ρούχα όσες φορές θέλεις!</p></section></div></main>
 <script>
-const qs = [
- {e:"🍂",q:"Τι πέφτει από τα δέντρα το φθινόπωρο;",a:["Χιόνια","Φύλλα","Κεράσια"],c:1},
- {e:"🌰",q:"Ποιον καρπό μαζεύουμε το φθινόπωρο;",a:["Κάστανα","Καρπούζια","Κεράσια"],c:0},
- {e:"☔",q:"Τι χρησιμοποιούμε όταν βρέχει;",a:["Γυαλιά ηλίου","Βεντάλια","Ομπρέλα"],c:2},
- {e:"🍎",q:"Ποιο είναι φθινοπωρινό φρούτο;",a:["Μήλο","Καρπούζι","Φράουλα"],c:0},
- {e:"🥾",q:"Τι φοράμε στις λασπωμένες βόλτες;",a:["Σανδάλια","Γαλότσες","Παντόφλες"],c:1},
- {e:"🐿️",q:"Τι μαζεύει ο σκίουρος;",a:["Κοχύλια","Χιονονιφάδες","Καρπούς"],c:2},
- {e:"🍄",q:"Πού μπορεί να φυτρώνουν μανιτάρια;",a:["Στο δάσος","Στον ουρανό","Στη θάλασσα"],c:0},
- {e:"🌧️",q:"Τι βλέπουμε συχνά στον φθινοπωρινό ουρανό;",a:["Πυροτεχνήματα","Σύννεφα και βροχή","Χριστουγεννιάτικα αστέρια"],c:1}
-];
-let i=0, chosen={};
-const $=id=>document.getElementById(id);
-function render(){
- const q=qs[i]; $("progress").textContent=`Ερώτηση ${i+1} από ${qs.length}`;
- $("emoji").textContent=q.e; $("question").textContent=q.q; $("feedback").textContent="";
- $("answers").innerHTML="";
- q.a.forEach((v,j)=>{
-   const b=document.createElement("button"); b.type="button"; b.className="answer"; b.textContent=v;
-   if(chosen[i]===j){b.classList.add(j===q.c?"correct":"wrong");}
-   b.addEventListener("click",()=>{chosen[i]=j;render();});
-   $("answers").appendChild(b);
- });
- if(chosen[i]!==undefined) $("feedback").textContent=chosen[i]===q.c?"Μπράβο! 🎉 Βρήκες τη σωστή απάντηση!":"Προσπάθησε ξανά! 🌻";
- $("prev").disabled=i===0;
- $("next").textContent=i===qs.length-1?"Τέλος παιχνιδιού!":"Επόμενο →";
-}
-$("prev").addEventListener("click",()=>{if(i>0){i--;render();}});
-$("next").addEventListener("click",()=>{
- if(i<qs.length-1){i++;render();}
- else {$("play").hidden=true;$("result").hidden=false;$("score").textContent=`Σκορ: ${qs.filter((q,k)=>chosen[k]===q.c).length} / ${qs.length}`;}
-});
-$("restart").addEventListener("click",()=>{i=0;chosen={};$("play").hidden=false;$("result").hidden=true;render();});
-render();
-</script>
-</body>
-</html>
+const items={
+tops:[{t:"Κίτρινη ζακέτα",e:"🧥",c:"#e9b52e",k:"outer"},{t:"Πράσινο πουλόβερ",e:"🧶",c:"#54834d",k:"shirt"},{t:"Κόκκινο μπουφάν",e:"🧥",c:"#c94b3b",k:"outer"},{t:"Ριγέ μπλούζα",e:"👕",c:"#6b9fc3",k:"stripe"},{t:"Μπεζ πουλόβερ",e:"🧶",c:"#d6c5a6",k:"shirt"},{t:"Μωβ μπλούζα",e:"👚",c:"#9372ad",k:"shirt"}],
+bottoms:[{t:"Μπλε παντελόνι",e:"👖",c:"#4e83b7",k:"pants"},{t:"Καφέ παντελόνι",e:"👖",c:"#9b7046",k:"pants"},{t:"Ροζ φούστα",e:"🩷",c:"#d97c91",k:"skirt"},{t:"Μπλε σορτς",e:"🩳",c:"#6b9fc3",k:"shorts"}],
+extras:[{t:"Σκούφος",e:"🧢",c:"#c94b3b",k:"hat"},{t:"Κασκόλ",e:"🧣",c:"#d99b32",k:"scarf"},{t:"Γαλότσες",e:"🥾",c:"#47794c",k:"boots"},{t:"Αθλητικά",e:"👟",c:"#4e83b7",k:"shoes"},{t:"Γάντια",e:"🧤",c:"#d97c91",k:"gloves"},{t:"Χωρίς αξεσουάρ",e:"🙂",c:"",k:"none"}]};
+function build(group){let root=document.getElementById(group);items[group].forEach(item=>{let b=document.createElement("button");b.className="choice";b.innerHTML=`<span class="pic">${item.e}</span><small>${item.t}</small>`;b.onclick=()=>{root.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");apply(group,item);document.getElementById("status").textContent="Διάλεξες: "+item.t+"!";};root.appendChild(b);});}
+function apply(group,x){if(group==="tops"){let shirt=document.getElementById("shirt"),outer=document.getElementById("outer");outer.style.display="none";shirt.style.background=x.c;if(x.k==="outer"){outer.style.display="block";outer.style.background=x.c;shirt.style.background="#fffdf8";}if(x.k==="stripe")shirt.style.background=`repeating-linear-gradient(0deg,${x.c} 0 8px,#fff 8px 16px)`;}
+if(group==="bottoms"){let b=document.getElementById("bottom");b.style.background=x.c;b.style.height=x.k==="pants"?"72px":x.k==="skirt"?"55px":"45px";b.style.top="190px";b.style.borderRadius=x.k==="skirt"?"4px 4px 20px 20px":"5px 5px 12px 12px";}
+if(group==="extras"){let hat=document.getElementById("hat"),scarf=document.getElementById("scarf"),shoes=document.getElementById("shoes");if(x.k==="hat"){hat.style.display="block";hat.style.background=x.c;}if(x.k==="scarf"){scarf.style.display="block";scarf.style.background=x.c;}if(x.k==="boots"||x.k==="shoes"){shoes.style.background=x.c;shoes.style.borderRadius=x.k==="boots"?"4px":"12px 5px 5px 5px";}if(x.k==="none"){hat.style.display="none";scarf.style.display="none";}if(x.k==="gloves")document.getElementById("status").textContent="Τα γάντια κρατούν τα χεράκια ζεστά!";}}
+function reset(){document.getElementById("shirt").style.background="#fffdf8";document.getElementById("outer").style.display="none";document.getElementById("bottom").style.background="#6b9fc3";document.getElementById("bottom").style.height="45px";document.getElementById("hat").style.display="none";document.getElementById("scarf").style.display="none";document.getElementById("shoes").style.background="#47794c";document.querySelectorAll(".choice").forEach(b=>b.classList.remove("selected"));document.getElementById("status").textContent="Ξεκινάμε από την αρχή! Διάλεξε ρούχα.";}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("active",x===b));let girl=b.dataset.kind==="girl";document.getElementById("pigtail").style.display=girl?"block":"none";document.getElementById("hair").style.height=girl?"45px":"38px";reset();document.getElementById("status").textContent=girl?"Διάλεξε ρούχα για το κορίτσι!":"Διάλεξε ρούχα για το αγόρι!";});
+["tops","bottoms","extras"].forEach(build);
+document.getElementById("reset").onclick=reset;
+document.getElementById("random").onclick=()=>{reset();["tops","bottoms","extras"].forEach(g=>{let arr=items[g],i=Math.floor(Math.random()*arr.length);document.querySelectorAll("#"+g+" .choice")[i].click();});document.getElementById("status").textContent="Έτοιμο ένα τυχαίο φθινοπωρινό ντύσιμο!";};
+document.getElementById("done").onclick=()=>document.getElementById("status").textContent="Μπράβο! Το παιδάκι είναι έτοιμο για βόλτα! 🍂";
+</script></body></html>
